@@ -39,5 +39,37 @@ namespace Csv.Service.Contact
             Console.WriteLine(contacts.Count());
             Console.WriteLine(engine.CsvItem("Surname"));
         }
+
+        public static void ReadContactFileWithRequestedFields(string fileName, List<CsvHeader> requested)
+        {
+            var engine = new CsvParser(fileName, true);
+            engine.SetOrderedFields(requested);
+
+            var contacts = new List<Csc.Type.Contact.Contact>();
+
+            Console.WriteLine("**************************************");
+            Console.WriteLine($"Total Row Count : {engine.CsvHeader.Count()}");
+            Console.WriteLine("**************************************");
+
+            while (!engine.EndOfStream)
+            {
+                engine.ReadLine();
+                Console.WriteLine($"Surname : {engine.CsvItem("Surname")}");
+                Console.WriteLine($"Email : {engine.CsvItem("Email")}");
+                Console.WriteLine("-----------------------------------------------");
+                if (engine.CsvHeader.Count != engine.CsvLine.Count)
+                {
+                    Console.Write($"Error line : { engine.ErrorRow}");
+                }
+                else
+                {
+                    contacts.Add(ContactData.GetLine(engine));
+                }
+
+            }
+
+            Console.WriteLine(contacts.Count());
+            Console.WriteLine(engine.CsvItem("Surname"));
+        }
     }
 }

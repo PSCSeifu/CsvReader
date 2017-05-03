@@ -8,18 +8,7 @@ namespace CsvEngine
 {
     public class CsvHeader
     {
-        public CsvHeader()
-        {
-            this.FieldName = "";
-            this.DefaultValue = "";
-            this.DataType = 1;
-            this.ForcedDefault = false;
-            this.AllowNull = true;
-        }
-
-        #region Public Properties
-
-        public int DataType { get; set; }
+        public Type DataType { get; set; }
         public string DefaultValue { get; set; }
         public string FieldName { get; set; }
         public bool ForcedDefault { get; set; }
@@ -31,6 +20,36 @@ namespace CsvEngine
                 return this.status;
             }
         }
+             
+        public CsvHeader()
+        {
+            this.FieldName = "";
+            this.DefaultValue = "";
+            this.DataType = typeof(string);
+            this.ForcedDefault = false;
+            this.AllowNull = true;
+        }
+
+        public CsvHeader(string fieldName)
+        {
+            this.FieldName = fieldName;
+            this.DefaultValue = "";
+            this.DataType = typeof(string);
+            this.ForcedDefault = false;
+            this.AllowNull = true;
+        }
+
+        public CsvHeader(string fieldName, Type dataType)
+        {
+            this.FieldName = fieldName;
+            this.DefaultValue = "";
+            this.DataType = dataType;
+            this.ForcedDefault = false;
+            this.AllowNull = true;
+        }
+
+        private HeaderStatusType status;
+
         public enum HeaderStatusType
         {
             NotValidated,
@@ -38,13 +57,7 @@ namespace CsvEngine
             IsNull,
             IncorrectData
         }
-
-        #endregion
-
-        #region Private Properties
-
-        private HeaderStatusType status;
-
-        #endregion
     }
+
+    
 }

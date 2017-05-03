@@ -241,6 +241,12 @@ namespace CsvEngine
             this.fields = (List<string>)null;
             this.items = (List<string>)null;
         }
+        public void SetOrderedFields(List<CsvHeader> fields)
+        {
+            this.requestedFields = fields;
+        }
+
+
         public void MoveToPositionInFile(long position = 0)
         {
             this.RowIndex = 0;
@@ -281,7 +287,7 @@ namespace CsvEngine
                         {
                             for (int index = 0; index < this.requestedFields.Count; ++index)
                             {
-                                //this.orderedItems.Add(this.requestedFields[index])
+                                this.orderedItems.Add(this.CsvItem(this.requestedFields[index].FieldName));
                             }
                         }
 
@@ -361,13 +367,17 @@ namespace CsvEngine
 
         private void SetupCsvParser(string fileName, bool hasHeader)
         {
-            this.fields = new List<string>();
-            //char comma = ',';
+            string separator = ",";
+            SetupCsvParser( fileName, hasHeader, separator);
+        }
+        private void SetupCsvParser(string fileName, bool hasHeader, string separator)
+        {
+            this.fields = new List<string>();          
             try
             {
                 this.encoding = CsvLib.GetFileEncoding(fileName);
                 this.sr = new StreamReader(new FileStream(fileName, FileMode.Open, FileAccess.Read), this.encoding);
-                this.Separator = (char)FindDelimiter(100); //comma; 
+                this.Separator = (string.IsNullOrEmpty(separator)) ? (char)FindDelimiter(100) : Convert.ToChar(separator);
                 this.CurrentLine = this.sr.ReadLine();
                 this.RowIndex = this.RowIndex + 1;
                 this.dataStartPosition = (long)this.sr.CurrentEncoding.GetByteCount(this.CurrentLine);

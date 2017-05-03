@@ -13,9 +13,16 @@ namespace CsvConsole
     {
         static void Main(string[] args)
         {            
-            ContactService.ReadContactFile(@"C:\Projects\PSC\CSVFiles\Contacts.csv");
-            P60Service.ReadP60File(@"C:\Projects\PSC\CSVFiles\P60s-2013.csv");
-            
+            //ContactService.ReadContactFile(@"C:\Projects\PSC\CSVFiles\Contacts.csv");
+            //P60Service.ReadP60File(@"C:\Projects\PSC\CSVFiles\P60s-2013.csv");
+
+            //Filtered Columns
+            List<CsvHeader> requested = new List<CsvHeader>();            
+            requested.Add(new CsvHeader("MobileNo",typeof(string)));
+            requested.Add(new CsvHeader("Title",typeof(int)));
+            ContactService.ReadContactFileWithRequestedFields(@"C:\Projects\PSC\CSVFiles\Contacts.csv", requested);
+
+
             Console.ReadLine();
         }
       
