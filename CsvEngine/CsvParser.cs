@@ -10,9 +10,7 @@ namespace CsvEngine
     public class CsvParser
     {
 
-
         #region Public Properties
-
 
         public List<string> CsvHeader
         {
@@ -74,7 +72,6 @@ namespace CsvEngine
                 return this.encoding;
             }
         }
-
         public int LineNumber
         {
             get
@@ -82,23 +79,17 @@ namespace CsvEngine
                 return this.lineNumber;
             }
         }
-
         public char Quote { get; set; }
         public int RowIndex { get; set; }
         public string RowTerminator { get; set; }
         public char Separator { get; set; }
         public bool StripQuotes { get; set; }
         public bool Trim { get; set; }
-
-
-
         public enum CsvOrderedLineStatustype
         {
             Valid,
             Error
         }
-
-
         #endregion
 
         #region Public Methods
@@ -145,9 +136,7 @@ namespace CsvEngine
             this.SetupCsvParser(fileName, hasHeader);
         }
 
-        public string CsvItem(int index) =>
-            (this.items == null || index <= -1 || index >= this.items.Count) ? "" : this.items[index];
-
+        public string CsvItem(int index) => (this.items == null || index <= -1 || index >= this.items.Count) ? "" : this.items[index];
         public string CsvItem(string name)
         {
             if (this.items == null || this.fields == null || (this.fields.Count == 0 || this.fields.Count != this.items.Count))
@@ -159,10 +148,7 @@ namespace CsvEngine
             }
             return "";
         }
-
-        public T CsvItem<T>(int index) =>
-            this.CsvItem<T>(index, default(T));
-        
+        public T CsvItem<T>(int index) => this.CsvItem<T>(index, default(T));        
         public T CsvItem<T>(int index, T defaultValue)
         {
             string str = this.CsvItem(index);          
@@ -184,10 +170,7 @@ namespace CsvEngine
                 return defaultValue;
             }
         }
-
-        public T CsvItem<T>(string name) =>
-            this.CsvItem<T>(name, default(T));
-
+        public T CsvItem<T>(string name) => this.CsvItem<T>(name, default(T));
         public T CsvItem<T>(string name, T defaultValue)
         {
             string str = this.CsvItem(name);
@@ -209,10 +192,6 @@ namespace CsvEngine
                 return defaultValue;
             }
         }
-
-
-
-
 
         public string CsvLineToString()
         {
@@ -274,7 +253,6 @@ namespace CsvEngine
             this.sr.BaseStream.Position = this.dataStartPosition;
             this.sr.DiscardBufferedData();
         }
-
         public void ReadLine()
         {
             this.parserLineStatus = CsvOrderedLineStatustype.Valid;
@@ -334,8 +312,6 @@ namespace CsvEngine
 
         #region Private Methods
 
-
-
         private void SetupCsvParser(string fileName, bool hasHeader)
         {
             this.fields = new List<string>();
@@ -362,7 +338,6 @@ namespace CsvEngine
                 throw ex;
             }
         }
-
 
         #endregion
 

@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C3D319E2-2263-4372-A12C-228FEA086ED2}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>CsvConsole</RootNamespace>
-    <AssemblyName>CsvConsole</AssemblyName>
+    <ProjectGuid>{EA9F13B7-C5D6-4EDD-A9C2-8D8C4F929AAF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Csv.Data</RootNamespace>
+    <AssemblyName>Csv.Data</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,26 +40,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Contact.cs" />
-    <Compile Include="P60.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Contact\ContactData.cs" />
+    <Compile Include="Contact\P60Data.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Csc.Type\Csv.Type.csproj">
       <Project>{cee0e06b-147a-4db3-8187-ae2074bf0925}</Project>
       <Name>Csv.Type</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Csv.Data\Csv.Data.csproj">
-      <Project>{ea9f13b7-c5d6-4edd-a9c2-8d8c4f929aaf}</Project>
-      <Name>Csv.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Csv.Service\Csv.Service.csproj">
-      <Project>{f2fa9135-f833-400f-beec-a8d174d9354e}</Project>
-      <Name>Csv.Service</Name>
     </ProjectReference>
     <ProjectReference Include="..\CsvEngine\CsvEngine.csproj">
       <Project>{8543424e-8411-435f-a2bf-3eeaf954d92a}</Project>
