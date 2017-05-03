@@ -144,6 +144,7 @@ namespace CsvEngine
             this.fields = new List<string>();
             this.SetupCsvParser(fileName, hasHeader);
         }
+
         public string CsvItem(int index) =>
             (this.items == null || index <= -1 || index >= this.items.Count) ? "" : this.items[index];
 
@@ -158,6 +159,61 @@ namespace CsvEngine
             }
             return "";
         }
+
+        public T CsvItem<T>(int index) =>
+            this.CsvItem<T>(index, default(T));
+        
+        public T CsvItem<T>(int index, T defaultValue)
+        {
+            string str = this.CsvItem(index);          
+            try
+            {
+                if (string.IsNullOrEmpty(str)) return defaultValue;
+                Type type = typeof(T);
+                try
+                {
+                    return (T) CsvLib.ValueAs(type, str);
+                }
+                catch
+                {
+                    return defaultValue;
+                }
+            }
+            catch (Exception)
+            {
+                return defaultValue;
+            }
+        }
+
+        public T CsvItem<T>(string name) =>
+            this.CsvItem<T>(name, default(T));
+
+        public T CsvItem<T>(string name, T defaultValue)
+        {
+            string str = this.CsvItem(name);
+            try
+            {
+                if (string.IsNullOrEmpty(str)) return defaultValue;
+                Type type = typeof(T);
+                try
+                {
+                    return (T)CsvLib.ValueAs(type, str);
+                }
+                catch
+                {
+                    return defaultValue;
+                }
+            }
+            catch (Exception)
+            {
+                return defaultValue;
+            }
+        }
+
+
+
+
+
         public string CsvLineToString()
         {
             if (this.items == null || this.items.Count == 0)

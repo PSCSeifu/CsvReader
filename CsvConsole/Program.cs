@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CsvEngine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +17,7 @@ namespace CsvConsole
 
         public static void ReadFile(string fileName)
         {
-            var engine = new CsvEngine.CsvParser(fileName, true);
+            var engine = new CsvParser(fileName, true);
             var contacts = new List<Contact>();
 
             while (!engine.EndOfStream)
@@ -32,7 +33,7 @@ namespace CsvConsole
                 }
                 else
                 {
-                    contacts.Add(new Contact(engine.CsvLine));
+                    contacts.Add(new Contact(engine));
                 }
                
             }
@@ -51,19 +52,47 @@ namespace CsvConsole
             public int Title { get; set; }
             public string MobileNo { get; set; }
 
-            public Contact(List<string> line)
+            public Contact(CsvParser cp)
             {
-                if(line != null && line.Count > 0)
+                if (cp.CsvLine != null && cp.CsvLine.Count > 0)
                 {
-                    ContactType = Convert.ToInt16(line[0]);
-                    Email = line[1];
-                    Forename1 = line[2];
-                    PhoneNo = line[3];
-                    Surname = line[4];
-                    Title = Convert.ToInt16(line[5]);
-                    MobileNo = line[6];
+                    ContactType = cp.CsvItem<int>("ContactType");
+                    Email = cp.CsvItem("Email");
+                    Forename1 = cp.CsvItem("Forename1");
+                    PhoneNo = cp.CsvItem("PhoneNo");
+                    Surname = cp.CsvItem("Surname");
+                    Title = cp.CsvItem<int>("Title");
+                    MobileNo = cp.CsvItem("MobileNo");
                 }
             }
+
+            //public Contact(List<string> line)
+            //{
+            //    if(line != null && line.Count > 0)
+            //    {
+            //        ContactType = Convert.ToInt16(line[0]);
+            //        Email = line[1];
+            //        Forename1 = line[2];
+            //        PhoneNo = line[3];
+            //        Surname = line[4];
+            //        Title = Convert.ToInt16(line[5]);
+            //        MobileNo = line[6];
+            //    }
+            //}
+            //public Contact(CsvParser cp)
+            //{
+            //    if (cp.CsvLine != null && cp.CsvLine.Count > 0)
+            //    {
+            //        ContactType = Convert.ToInt16(cp.CsvItem("ContactType"));
+            //        Email = cp.CsvItem("Email");
+            //        Forename1 = cp.CsvItem("Forename1");
+            //        PhoneNo = cp.CsvItem("PhoneNo");
+            //        Surname = cp.CsvItem("Surname");
+            //        Title = Convert.ToInt16(cp.CsvItem("Title"));
+            //        MobileNo = cp.CsvItem("MobileNo");
+            //    }
+            //}
+
         }
     }
 }

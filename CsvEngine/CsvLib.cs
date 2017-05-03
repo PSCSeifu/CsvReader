@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -62,5 +63,48 @@ namespace CsvEngine
 
             return defaultEncodingIfNoBom;
         }
+
+        public static object ValueAs (Type type, string input)
+        {            
+            if (type == typeof(string)) return input;
+            if (type == typeof(int)) return Convert.ToInt32(input);
+            if (type == typeof(bool)) return Convert.ToBoolean(input);            
+            if (type == typeof(Double)) return Convert.ToDouble(input);
+            if (type == typeof(DateTime))
+            {
+                try
+                {
+                    return Convert.ToDateTime(input);
+                }
+                catch (Exception)
+                {
+                    DateTime.TryParse(input, out DateTime date);
+                    return date;
+                }
+            }
+
+            if (type == typeof(char)) return Convert.ToChar(input);
+            if (type == typeof(byte)) return Convert.ToByte(input);
+            if (type == typeof(Decimal)) return Convert.ToDecimal(input);
+            if (type == typeof(Single)) return Convert.ToSingle(input);
+            if (type == typeof(long)) return Convert.ToInt64(input);
+            
+            if (type == typeof(float))
+            {
+                try
+                {
+                    return float.Parse(input, CultureInfo.InvariantCulture.NumberFormat);
+                }
+                catch (Exception)
+                {
+                     var r = float.TryParse(input, out float output);
+                    return (r) ? output:  0.00;
+                }                
+            }
+
+            return input;
+        }
     }
 }
+
+
