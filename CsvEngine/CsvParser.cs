@@ -308,6 +308,53 @@ namespace CsvEngine
                 this.items = (List<string>)null;
         }
 
+
+        public int FindDelimiter(int numberOfRowsToCheck = 100)
+        {
+            this.MoveToPositionInFile(0L);
+            Dictionary<int, int> dictionary = new Dictionary<int, int>();
+            int num1 = 0;
+            while (!this.sr.EndOfStream)
+            {
+                ++num1;
+                if (num1 <= numberOfRowsToCheck)
+                {
+                    this.CurrentLine = this.sr.ReadLine();
+                    if (string.IsNullOrEmpty(this.CurrentLine))
+                    {
+                        --num1;
+                    }
+                    else
+                    {
+                        for (int index = 0; index < this.CurrentLine.Length; ++index)
+                        {
+                            char ch = this.CurrentLine[index];
+                            if ((int)ch != 32 && (int)ch != 34 && ((int)ch < 48 || (int)ch > 57) && (((int)ch < 65 || (int)ch > 90) && ((int)ch < 97 || (int)ch > 122)))
+                            {
+                                if (!dictionary.ContainsKey((int)ch))
+                                    dictionary.Add((int)ch, 1);
+                                else
+                                    dictionary[(int)ch] = dictionary[(int)ch] + 1;
+                            }
+                        }
+                    }
+                }
+                else
+                    break;
+            }
+            int num2 = dictionary.Values.Max();
+            int num3 = 44;
+            foreach (int key in dictionary.Keys)
+            {
+                if (dictionary[key] == num2)
+                {
+                    num3 = key;
+                    break;
+                }
+            }
+            this.MoveToPositionInFile(0L);
+            return num3;
+        }
         #endregion
 
         #region Private Methods
@@ -315,12 +362,12 @@ namespace CsvEngine
         private void SetupCsvParser(string fileName, bool hasHeader)
         {
             this.fields = new List<string>();
-            char comma = ',';
+            //char comma = ',';
             try
             {
                 this.encoding = CsvLib.GetFileEncoding(fileName);
                 this.sr = new StreamReader(new FileStream(fileName, FileMode.Open, FileAccess.Read), this.encoding);
-                this.Separator = comma; //FindDelimiter(100);
+                this.Separator = (char)FindDelimiter(100); //comma; 
                 this.CurrentLine = this.sr.ReadLine();
                 this.RowIndex = this.RowIndex + 1;
                 this.dataStartPosition = (long)this.sr.CurrentEncoding.GetByteCount(this.CurrentLine);
