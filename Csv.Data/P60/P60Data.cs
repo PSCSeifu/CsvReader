@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Csv.Data.Contact
+namespace Csv.Data.P60
 {
     public static class P60Data
     {
-        public static P60 GetLine(CsvParser cp)
+        public static Csv.Type.P60.P60 GetLine(CsvParser cp)
         {
             var p60 = new Csv.Type.P60.P60();
             if (cp.CsvLine != null && cp.CsvLine.Count > 0)

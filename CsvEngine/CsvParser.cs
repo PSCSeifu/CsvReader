@@ -143,6 +143,10 @@ namespace CsvEngine
                 return "";
             for (int index = 0; index < this.fields.Count; ++index)
             {
+                var aa = this.fields[index].ToLower();
+                var bb = name.ToLower();
+                var cond = this.fields[index].ToLower() == name.ToLower();
+
                 if (this.fields[index].ToLower() == name.ToLower())
                     return this.items[index];
             }

@@ -41,7 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contact\ContactData.cs" />
-    <Compile Include="Contact\P60Data.cs" />
+    <Compile Include="P60\P60Data.cs" />
+    <Compile Include="Payroll\PayrollData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
