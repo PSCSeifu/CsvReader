@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Csv.Type.Common;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Csv.Type.Payroll
 {
-    public class Payroll
+    public class Payroll 
     {
         public string AccountOfficeReference { get; set; }
         public string Address1 { get; set; }
@@ -109,5 +111,24 @@ namespace Csv.Type.Payroll
             this.OmniSlip = false;
 
         }
+    }
+
+    public class PayrollList  : Csv.Type.Common.CommonCsvList<Payroll>
+    {
+        public List<Payroll> Items { get; set; } = new List<Payroll>();
+        public int Count { get { return Items.Count; }  set { Count = value; } }
+        //public string HeaderString { get; set; }
+
+        public string OutputPath { get; set; }
+
+        //public IEnumerator<Payroll> GetEnumerator()
+        //{
+        //    return Items.GetEnumerator();
+        //}
+
+        //IEnumerator IEnumerable.GetEnumerator()
+        //{
+        //    return this.GetEnumerator();
+        //}
     }
 }

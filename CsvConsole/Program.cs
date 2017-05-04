@@ -26,7 +26,8 @@ namespace CsvConsole
 
 
             /*Write CSV*/
-            PayrollService.WritePayrollCSVFile(@"C:\Projects\PSC\CSVFiles\Payroll.csv", @"C:\Projects\PSC\CsvOut2\OutPayroll.csv");
+            //PayrollService.WritePayrollCSVFile(@"C:\Projects\PSC\CSVFiles\Payroll.csv", @"C:\Projects\PSC\CsvOut2\OutPayroll.csv");
+            PayrollService.WritePayrollCSVFile(@"C:\Projects\PSC\CsvOut2\OutPayroll.csv", @"C:\Projects\PSC\CsvOut3\OutPayroll.csv");
 
             Console.ReadLine();
         }

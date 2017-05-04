@@ -60,35 +60,59 @@ namespace Csv.Service.Payroll
 
             /* Read Source */
             var engine = new CsvParser(sourceFileName, true);
-            var payrollList = new List<Csv.Type.Payroll.Payroll>();
+            var payrollList = new Csv.Type.Common.CommonCsvList<Csv.Type.Payroll.Payroll>();
             while (!engine.EndOfStream)
             {
                 engine.ReadLine();               
                 if (engine.CsvHeader.Count == engine.CsvLine.Count) 
-                    payrollList.Add(PayrollData.GetLine(engine));
+                    payrollList.Items.Add(PayrollData.GetLine(engine));
             }
+            payrollList.OutputPath = outputPath;
 
             /* Write CSV */
-            if(payrollList !=null && payrollList.Count > 0)
+            WriteOut<Csv.Type.Payroll.Payroll>(payrollList);
+
+            //if (payrollList !=null && payrollList.Count > 0)
+            //{
+            //    //Get List<String> of Headers from class
+            //    List<string> headerList =new List<string>();
+            //    CsvMaker.GetDefaultFields<Csv.Type.Payroll.Payroll>(ref headerList);
+
+            //    //Create a Header string line - with quotes & delimiter
+            //    var header = CsvMaker.CsvLine(headerList);
+
+
+            //    using (StreamWriter sw = new StreamWriter(outputPath, true))
+            //    {
+            //        //Write header string to file
+            //        sw.WriteLine(header);
+
+            //        foreach (var payroll in payrollList)
+            //        {
+            //            //Create a csv line - with quotes and delimiter
+            //           sw.WriteLine(CsvMaker.CsvItem<Csv.Type.Payroll.Payroll>(payroll));
+            //        }
+            //    }
+            //}
+        }
+
+        public static void WriteOut<T>(Csv.Type.Common.CommonCsvList<T> sourceObject)
+        {
+            List<string> headerList = new List<string>();
+            CsvMaker.GetDefaultFields<T>(ref headerList);
+
+            //Create a Header string line - with quotes & delimiter
+            var header = CsvMaker.CsvLine(headerList);
+
+            using (StreamWriter sw = new StreamWriter(sourceObject.OutputPath, true))
             {
-                //Get List<String> of Headers from class
-                List<string> headerList =new List<string>();
-                CsvMaker.GetDefaultFields<Csv.Type.Payroll.Payroll>(ref headerList);
+                //Write header string to file
+                sw.WriteLine(header);
 
-                //Create a Header string line - with quotes & delimiter
-                var header = CsvMaker.CsvLine(headerList);
-
-               
-                using (StreamWriter sw = new StreamWriter(outputPath, true))
+                foreach (var item in sourceObject.Items)
                 {
-                    //Write header string to file
-                    sw.WriteLine(header);
-
-                    foreach (var payroll in payrollList)
-                    {
-                        //Create a csv line - with quotes and delimiter
-                       sw.WriteLine(CsvMaker.CsvItem<Csv.Type.Payroll.Payroll>(payroll));
-                    }
+                    //Create a csv line - with quotes and delimiter
+                    sw.WriteLine(CsvMaker.CsvItem<T>(item));
                 }
             }
         }
