@@ -30,13 +30,11 @@ namespace CsvEngine
 
 
         public static string CsvLine(List<string> source, char separator, char quote)
-        {
-            return CsvLine(source, true, true, separator, quote);
-        }
-        public static string CsvLine(List<string> source)
-        {
-            return CsvLine(source, true, true, ',', '"');
-        }
+            => CsvLine(source, true, true, separator, quote);        
+
+        public static string CsvLine(List<string> source)        
+            => CsvLine(source, true, true, ',', '"');
+        
         public static string CsvLine(List<string> source, bool addQuotes, bool trim, char separator, char quote)
         {
             if (source == null || source.Count == 0)
@@ -77,6 +75,7 @@ namespace CsvEngine
 
             return csvLine;
         }
+
 
         public static void WireUpStringList<T>(T sourceObject, List<string> fields, ref List<string> data)
         {
