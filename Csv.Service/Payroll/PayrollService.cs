@@ -1,4 +1,5 @@
 ﻿using Csv.Data.Payroll;
+using Csv.Service.Common;
 using CsvEngine;
 using System;
 using System.Collections.Generic;
@@ -14,30 +15,38 @@ namespace Csv.Service.Payroll
         public static void ReadPayrollFile(string fileName)
         {
             var engine = new CsvParser(fileName, true);
-            var payrollList = new List<Csv.Type.Payroll.Payroll>();
+            var payrollList = new Csv.Type.Common.CommonCsvList<Csv.Type.Payroll.Payroll>();
 
             while (!engine.EndOfStream)
             {
-                engine.ReadLine();
-                Console.WriteLine($"AccountOfficeReference  : {engine.CsvItem("AccountOfficeReference")}");
-                Console.WriteLine($"Address1  : {engine.CsvItem("Address1")}");
-                Console.WriteLine($"CompanyName   : {engine.CsvItem("CompanyName")}");
-                Console.WriteLine($"FourWeeklyDivisor   : {engine.CsvItem("FourWeeklyDivisor")}");
-                Console.WriteLine($"TaxDistrict   : {engine.CsvItem("TaxDistrict")}");
-                Console.WriteLine($"NormalPayDay   : {engine.CsvItem("NormalPayDay")}");
-                Console.WriteLine($"EmployeeNoFormat   : {engine.CsvItem("EmployeeNoFormat")}");
-                Console.WriteLine($"OmniSlip  : {engine.CsvItem("OmniSlip")}");
-                Console.WriteLine($"PrintPaymentDate  : {engine.CsvItem("PrintPaymentDate")}");
+                engine.ReadLine();                
 
-                Console.WriteLine("-----------------------------------------------");
-                if (engine.CsvHeader.Count != engine.CsvLine.Count)
+                if (engine.CsvHeader.Count == engine.CsvLine.Count)
                 {
-                    Console.Write($"Error line : { engine.ErrorRow}");
+                    payrollList.Items.Add(PayrollData.GetLine(engine));
+                    Console.WriteLine($"AccountOfficeReference  : {engine.CsvItem("AccountOfficeReference")}");
+                    Console.WriteLine($"Address1  : {engine.CsvItem("Address1")}");
+                    Console.WriteLine($"CompanyName   : {engine.CsvItem("CompanyName")}");
+                    Console.WriteLine($"FourWeeklyDivisor   : {engine.CsvItem("FourWeeklyDivisor")}");
+                    Console.WriteLine($"TaxDistrict   : {engine.CsvItem("TaxDistrict")}");
+                    Console.WriteLine($"NormalPayDay   : {engine.CsvItem("NormalPayDay")}");
+                    Console.WriteLine($"EmployeeNoFormat   : {engine.CsvItem("EmployeeNoFormat")}");
+                    Console.WriteLine($"OmniSlip  : {engine.CsvItem("OmniSlip")}");
+                    Console.WriteLine($"PrintPaymentDate  : {engine.CsvItem("PrintPaymentDate")}");
+
+                    Console.WriteLine("-----------------------------------------------");
+                }
+                else if (engine.CsvLine.Count > 0 && engine.CsvLine[0].Contains("EOF"))
+                {
+                    payrollList.EndOfFile = true;
+                    payrollList.EndOfFileTimeStamp = (engine.CsvLine.Count < 2 ) ? "" : engine.CsvLine[1]?.ToString();
+                    Console.WriteLine($"End of CSV File : Create TimeStamp @ {payrollList.EndOfFileTimeStamp}");
                 }
                 else
                 {
-                    payrollList.Add(PayrollData.GetLine(engine));
+                    Console.WriteLine($"Error line : { engine.ErrorRow}");
                 }
+
 
                 var x = new Csv.Type.Payroll.Payroll();
                 CsvLib.WireupCSV<Csv.Type.Payroll.Payroll>(ref x, engine.CsvHeader, engine.CsvLine);
@@ -49,72 +58,48 @@ namespace Csv.Service.Payroll
 
         }
 
-        public static void WritePayrollCSVFile(string sourceFileName, string outputPath)
+        public static void WritePayrollCSVFile(string sourceFileName, string outputPath, string payrollNo)
         {
-            //Validate output path directory exists
+            /* Validate/Prepare Path */
+            outputPath = PrepareOutputPath(payrollNo, "payroll", outputPath);
+
+            /* Read Source */
+            var payrollList = ReadFromSource(sourceFileName, outputPath);
+
+            /* Write CSV */
+            CommonService.WriteOut<Csv.Type.Payroll.Payroll>(payrollList);
+            int count = payrollList.Count;
+        }
+
+        public static string PrepareOutputPath(string payrollNo, string fileNameString, string outputPath)
+        {
             var dir = Path.GetDirectoryName(outputPath);
             if (!Directory.Exists(dir)) { Directory.CreateDirectory(dir); }
 
-            //Delete file if exists
+            var fileName = CommonService.FileName(fileNameString, payrollNo);
+            outputPath = Path.Combine(outputPath, fileName);
+
             if (File.Exists(outputPath)) { File.Delete(outputPath); }
 
-            /* Read Source */
+            return outputPath;
+        }
+
+        public static Csv.Type.Common.CommonCsvList<Csv.Type.Payroll.Payroll> ReadFromSource(string sourceFileName, string outputPath)
+        {
             var engine = new CsvParser(sourceFileName, true);
             var payrollList = new Csv.Type.Common.CommonCsvList<Csv.Type.Payroll.Payroll>();
             while (!engine.EndOfStream)
             {
-                engine.ReadLine();               
-                if (engine.CsvHeader.Count == engine.CsvLine.Count) 
+                engine.ReadLine();
+                if (engine.CsvHeader.Count == engine.CsvLine.Count)
                     payrollList.Items.Add(PayrollData.GetLine(engine));
+                else if (engine.CsvLine.Count > 0 && engine.CsvLine[0].Contains("EOF"))
+                    payrollList.EndOfFile = true;
+                    payrollList.EndOfFileTimeStamp = (engine.CsvLine.Count < 2) ? "" : engine.CsvLine[1]?.ToString();
             }
             payrollList.OutputPath = outputPath;
 
-            /* Write CSV */
-            WriteOut<Csv.Type.Payroll.Payroll>(payrollList);
-
-            //if (payrollList !=null && payrollList.Count > 0)
-            //{
-            //    //Get List<String> of Headers from class
-            //    List<string> headerList =new List<string>();
-            //    CsvMaker.GetDefaultFields<Csv.Type.Payroll.Payroll>(ref headerList);
-
-            //    //Create a Header string line - with quotes & delimiter
-            //    var header = CsvMaker.CsvLine(headerList);
-
-
-            //    using (StreamWriter sw = new StreamWriter(outputPath, true))
-            //    {
-            //        //Write header string to file
-            //        sw.WriteLine(header);
-
-            //        foreach (var payroll in payrollList)
-            //        {
-            //            //Create a csv line - with quotes and delimiter
-            //           sw.WriteLine(CsvMaker.CsvItem<Csv.Type.Payroll.Payroll>(payroll));
-            //        }
-            //    }
-            //}
-        }
-
-        public static void WriteOut<T>(Csv.Type.Common.CommonCsvList<T> sourceObject)
-        {
-            List<string> headerList = new List<string>();
-            CsvMaker.GetDefaultFields<T>(ref headerList);
-
-            //Create a Header string line - with quotes & delimiter
-            var header = CsvMaker.CsvLine(headerList);
-
-            using (StreamWriter sw = new StreamWriter(sourceObject.OutputPath, true))
-            {
-                //Write header string to file
-                sw.WriteLine(header);
-
-                foreach (var item in sourceObject.Items)
-                {
-                    //Create a csv line - with quotes and delimiter
-                    sw.WriteLine(CsvMaker.CsvItem<T>(item));
-                }
-            }
+            return payrollList;
         }
     }
 }

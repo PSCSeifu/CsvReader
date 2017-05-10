@@ -8,9 +8,9 @@ namespace Csv.Data.Contact
 {
     public static class ContactData
     {
-        public static Csc.Type.Contact.Contact GetLine(CsvEngine.CsvParser cp)
+        public static Csv.Type.Contact.Contact GetLine(CsvEngine.CsvParser cp)
         {
-            var contact = new Csc.Type.Contact.Contact();
+            var contact = new Csv.Type.Contact.Contact();
 
             if (cp.CsvLine != null && cp.CsvLine.Count > 0)
             {

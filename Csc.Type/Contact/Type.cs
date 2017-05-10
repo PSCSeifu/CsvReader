@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Csc.Type.Contact
+namespace Csv.Type.Contact
 {
     public class Contact
     {
@@ -21,5 +21,10 @@ namespace Csc.Type.Contact
         {
 
         }
+    }
+
+    public class ContactList : Csv.Type.Common.CommonCsvList<Contact>
+    {
+        public new List<Contact> Items { get; set; } = new List<Contact>();
     }
 }

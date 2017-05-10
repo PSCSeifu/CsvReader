@@ -16,7 +16,7 @@ namespace CsvConsole
         {
             //ContactService.ReadContactFile(@"C:\Projects\PSC\CSVFiles\Contacts.csv");
             //P60Service.ReadP60File(@"C:\Projects\PSC\CSVFiles\P60s-2013.csv");
-            // PayrollService.ReadPayrollFile(@"C:\Projects\PSC\CSVFiles\Payroll.csv");
+             PayrollService.ReadPayrollFile(@"C:\Projects\PSC\CsvOut2\OutPayroll.csv");
 
             //Filtered Columns
             //List<CsvHeader> requested = new List<CsvHeader>();            
@@ -27,7 +27,10 @@ namespace CsvConsole
 
             /*Write CSV*/
             //PayrollService.WritePayrollCSVFile(@"C:\Projects\PSC\CSVFiles\Payroll.csv", @"C:\Projects\PSC\CsvOut2\OutPayroll.csv");
-            PayrollService.WritePayrollCSVFile(@"C:\Projects\PSC\CsvOut2\OutPayroll.csv", @"C:\Projects\PSC\CsvOut3\OutPayroll.csv");
+
+            PayrollService.WritePayrollCSVFile(@"C:\Projects\PSC\CsvOut2\OutPayroll.csv", @"C:\Projects\PSC\CsvOut3\","488");
+
+            ContactService.WriteCSVFile(@"C:\Projects\PSC\CSVFiles\Contacts.csv", @"C:\Projects\PSC\CsvOut3\","488");
 
             Console.ReadLine();
         }
