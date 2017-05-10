@@ -240,6 +240,15 @@ namespace CsvEngine
             double result;
             return !string.IsNullOrEmpty(value) && double.TryParse(value, out result);
         }
+
+        /// <summary>
+        /// Given an Entity type T, a property string list of 'fields' and corresponsding 
+        /// string data values, it returns the fully constructed sourceObject with correct data types.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sourceObject">Any Entity object of type T</param>
+        /// <param name="fields">List of strings that match the property names of the sourceObject e.g. CSV headers </param>
+        /// <param name="data">>List of strings that match the data values, with the same order as feilds</param>
         public static void WireupCSV<T>(ref T sourceObject, List<string> fields, List<string> data)
         {
             if (fields == null || fields.Count == 0 || (data == null || data.Count == 0) || data.Count < fields.Count)

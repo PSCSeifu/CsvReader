@@ -43,7 +43,6 @@
     <Compile Include="CsvHeader.cs" />
     <Compile Include="CsvLib.cs" />
     <Compile Include="CsvMaker.cs" />
-    <Compile Include="CsvObjectMap.cs" />
     <Compile Include="CsvParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

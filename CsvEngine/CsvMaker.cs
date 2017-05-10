@@ -11,7 +11,7 @@ namespace CsvEngine
     public static class CsvMaker
     {
 
-        public static string CsvItem<T>(T sourceObject )
+        public static string CsvItem<T>(T sourceObject)
         {
             List<string> fields = new List<string>();
             GetDefaultFields<T>(ref fields);
@@ -30,11 +30,11 @@ namespace CsvEngine
 
 
         public static string CsvLine(List<string> source, char separator, char quote)
-            => CsvLine(source, true, true, separator, quote);        
+            => CsvLine(source, true, true, separator, quote);
 
-        public static string CsvLine(List<string> source)        
+        public static string CsvLine(List<string> source)
             => CsvLine(source, true, true, ',', '"');
-        
+
         public static string CsvLine(List<string> source, bool addQuotes, bool trim, char separator, char quote)
         {
             if (source == null || source.Count == 0)
@@ -85,7 +85,7 @@ namespace CsvEngine
             List<CsvObjectMap> ledger = new List<CsvObjectMap>();
             ledger = GetObjectMap<T>(sourceObject, fields);
 
-            if (ledger == null && ledger.Count > 0) return;          
+            if (ledger == null && ledger.Count > 0) return;
 
             foreach (var item in ledger)
             {
@@ -106,11 +106,11 @@ namespace CsvEngine
                     data.Add(value?.ToString() ?? "");
                 else
                     data.Add("");
-            }                      
+            }
         }
-        
+
         public static List<CsvObjectMap> GetObjectMap<T>(T sourceObject, List<string> fields)
-        {           
+        {
             List<CsvObjectMap> objectMapList = new List<CsvObjectMap>();
 
             if (fields != null && fields.Count > 0)
@@ -121,22 +121,40 @@ namespace CsvEngine
                                                 .Where(x => x.Name == field)
                                                 .SingleOrDefault();
 
-                   // var value = sourceObject.GetType().GetProperty(field).GetValue(sourceObject, null);
+                    // var value = sourceObject.GetType().GetProperty(field).GetValue(sourceObject, null);
 
                     objectMapList.Add(new CsvObjectMap(field, property?.PropertyType ?? typeof(string)/*, value*/));
                 }
-                
+
             }
 
             return objectMapList;
         }
 
-        public static void GetDefaultFields<T>( ref List<string> fields)
+        public static void GetDefaultFields<T>(ref List<string> fields)
         {
-            T sourceObject = Activator.CreateInstance<T>();            
-            foreach (PropertyInfo property in sourceObject.GetType().GetProperties())            
-                fields.Add(property?.Name ?? "");            
+            T sourceObject = Activator.CreateInstance<T>();
+            foreach (PropertyInfo property in sourceObject.GetType().GetProperties())
+                fields.Add(property?.Name ?? "");
         }
 
+    }
+
+    public class CsvObjectMap
+    {
+        public string FieldName { get; set; }
+        public Type Type { get; set; }
+        public object Value { get; set; }
+        public CsvObjectMap()
+        {
+
+        }
+
+        public CsvObjectMap(string fieldName, Type type, object value = null)
+        {
+            this.FieldName = fieldName;
+            this.Type = type;
+            this.Value = value;
+        }
     }
 }
