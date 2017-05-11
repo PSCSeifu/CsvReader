@@ -63,9 +63,9 @@
       <Project>{f2fa9135-f833-400f-beec-a8d174d9354e}</Project>
       <Name>Csv.Service</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CsvEngine\CsvEngine.csproj">
+    <ProjectReference Include="..\CsvEngine\Csv.Engine.csproj">
       <Project>{8543424e-8411-435f-a2bf-3eeaf954d92a}</Project>
-      <Name>CsvEngine</Name>
+      <Name>Csv.Engine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

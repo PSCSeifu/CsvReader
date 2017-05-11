@@ -48,9 +48,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\CsvEngine\CsvEngine.csproj">
+    <ProjectReference Include="..\CsvEngine\Csv.Engine.csproj">
       <Project>{8543424E-8411-435F-A2BF-3EEAF954D92A}</Project>
-      <Name>CsvEngine</Name>
+      <Name>Csv.Engine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

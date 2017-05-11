@@ -1,11 +1,13 @@
-﻿using System;
+﻿using CsvEngine;
+using FluentAssertions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Csv.Test.CsvLib
+namespace Csv.Test.CsvEngine
 {
     public class CsvLibTests
     {
@@ -14,12 +16,12 @@ namespace Csv.Test.CsvLib
         {
             //Arrange
             string source = "\"AccountOfficeReference\",\"Address1\",\"Address2\",\"Address3\",\"Address4\",\"Address5\",\"BacsReferenceNo\",\"BankAccountName\",\"BankAccountNo\",\"BankBranch\",\"BankName\",\"BankSortCode\",\"CompanyName\",\"CompanyNo\",\"CompanyWeeks\",\"FourWeeklyDivisor\",\"HourlyDivisor\",\"MonthlyDivisor\",\"PayFrequency\",\"PeriodsPerYear\",\"QuarterlyDivisor\",\"TaxDistrict\",\"TaxOfficeNo\",\"TaxReference\",\"TwoWeeklyDivisor\",\"WeeklyDivisor\",\"WebSystemType\",\"AdditionalReports\",\"EmailPayslips\",\"EmailReports\",\"OutputMethod\",\"P11D\",\"PaidByBacs\",\"PayByDirectDebit\",\"PayDay\",\"PensionByWeb\",\"PostMethod\",\"SecondaryBacs\",\"PrintReports\",\"PrintEEsPayslip\",\"PrintERsPayslip\",\"NormalPayDay\",\"OrganisationName\",\"EmployeeNoFormat\",\"PayslipERsPension1\",\"PayslipERsPension2\",\"PrintPaymentDate\",\"OmniSlip\"";
-           
+            List<string> expectedList = new List<string>() { "AccountOfficeReference","Address1","Address2","Address3","Address4","Address5","BacsReferenceNo","BankAccountName","BankAccountNo","BankBranch","BankName","BankSortCode","CompanyName","CompanyNo","CompanyWeeks","FourWeeklyDivisor","HourlyDivisor","MonthlyDivisor","PayFrequency","PeriodsPerYear","QuarterlyDivisor","TaxDistrict","TaxOfficeNo","TaxReference","TwoWeeklyDivisor","WeeklyDivisor","WebSystemType","AdditionalReports","EmailPayslips","EmailReports","OutputMethod","P11D","PaidByBacs","PayByDirectDebit","PayDay","PensionByWeb","PostMethod","SecondaryBacs","PrintReports","PrintEEsPayslip","PrintERsPayslip","NormalPayDay","OrganisationName","EmployeeNoFormat","PayslipERsPension1","PayslipERsPension2","PrintPaymentDate","OmniSlip" };
             //Act
-            //var result = CsvEngine.CsvLib.CsvSplit(source, true, true, ',', '"');
+            var result = CsvLib.CsvSplit(source, true, true, ',', '"');
 
             //Assert
-
+            result.Should().BeEquivalentTo(expectedList);
         }
         
     }

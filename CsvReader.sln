@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvEngine", "CsvEngine\CsvEngine.csproj", "{8543424E-8411-435F-A2BF-3EEAF954D92A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Csv.Engine", "CsvEngine\Csv.Engine.csproj", "{8543424E-8411-435F-A2BF-3EEAF954D92A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsvConsole", "CsvConsole\CsvConsole.csproj", "{C3D319E2-2263-4372-A12C-228FEA086ED2}"
 EndProject
